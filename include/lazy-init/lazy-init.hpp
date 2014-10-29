@@ -53,6 +53,12 @@ struct lazy_init {
 		:params(std::move(r.params))
 		,obj(r.obj)
 	{ r.obj = nullptr; }
+	lazy_init<T, Args...>& operator= (lazy_init<T, Args...>&& r) {
+		params = std::move(r.params);
+		if ( obj ) delete obj;
+		obj = r.obj;
+		r.obj = nullptr;
+	}
 	virtual ~lazy_init() { delete obj; }
 
 	const T* get() const { return _get(); }
@@ -83,6 +89,7 @@ private:
 	lazy_init& operator= (const lazy_init<T, Args...> &);
 };
 
+/***************************************************************************/
 
 template <typename T, typename... Args>
 lazy_init<T, Args...> make_lazy_init(Args... args) {
