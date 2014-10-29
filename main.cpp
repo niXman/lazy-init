@@ -79,12 +79,24 @@ int main() {
 		int v0 = 3;
 		int v1 = 4;
 		auto t0 = lazy_init::make_lazy_init<type1, int&>(v0);
+		assert(v0 == 3);
 		auto t1 = lazy_init::make_lazy_init<type1, int&>(v1);
+		assert(v1 == 4);
+
 		assert(t0->v == 6);
 		assert(t1->v == 8);
 		t1->v = 10;
 		t0 = std::move(t1);
 		assert(t0->v == 10);
+	}
+	{
+		int v0 = 3;
+		auto t0 = lazy_init::make_lazy_init<type1, int&>(v0);
+		assert(v0 == 3);
+
+		auto t1(std::move(t0));
+		assert(t1->v == 6);
+		assert(v0 == 6);
 	}
 }
 
