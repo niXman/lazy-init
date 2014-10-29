@@ -48,7 +48,6 @@ struct lazy_init {
 		:params(args...)
 		,obj(nullptr)
 	{}
-
 	lazy_init(lazy_init<T, Args...>&& r)
 		:params(std::move(r.params))
 		,obj(r.obj)
@@ -58,7 +57,9 @@ struct lazy_init {
 		if ( obj ) delete obj;
 		obj = r.obj;
 		r.obj = nullptr;
+		return *this;
 	}
+
 	virtual ~lazy_init() { delete obj; }
 
 	const T* get() const { return _get(); }
