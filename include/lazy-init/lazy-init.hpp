@@ -52,12 +52,12 @@ struct gens<0, S...> {
 };
 
 template<typename T, typename F, typename Tuple, int ...S>
-T* invoke_impl(F &&f, Tuple&& tuple, seq<S...>) {
+T invoke_impl(F &&f, Tuple&& tuple, seq<S...>) {
 	return std::forward<F>(f)(std::get<S>(std::forward<Tuple>(tuple))...);
 }
 
 template<typename T, typename F, typename Tuple>
-T* invoke(F &&f, Tuple &&tuple) {
+T invoke(F &&f, Tuple &&tuple) {
 	using indices = typename detail::gens<
 		std::tuple_size<
 			typename std::remove_reference<Tuple>::type
@@ -103,7 +103,7 @@ struct lazy_init {
 private:
 	T* _get() const {
 		if ( !obj )
-			obj = detail::invoke<T>(
+			obj = detail::invoke<T*>(
 				 [](Args... args){ return new T(args...); }
 				,params
 			);

@@ -96,6 +96,7 @@ int main() {
 		auto t = lazy_init::make_lazy_init<type2, int, int&>(v0, v1);
 		assert(v1 == 3);
 		assert(t->v1 == 3*2);
+		assert(v1 == 3*2);
 	}
 	{
 //		noncopyable v;
@@ -108,13 +109,17 @@ int main() {
 	{
 		int v0 = 3;
 		int v1 = 4;
+
 		auto t0 = lazy_init::make_lazy_init<type1, int&>(v0);
 		assert(v0 == 3);
+		assert(t0->v == 6);
+		assert(v0 == 6);
+
 		auto t1 = lazy_init::make_lazy_init<type1, int&>(v1);
 		assert(v1 == 4);
-
-		assert(t0->v == 6);
 		assert(t1->v == 8);
+		assert(v1 == 8);
+
 		t1->v = 10;
 		t0 = std::move(t1);
 		assert(t0->v == 10);
