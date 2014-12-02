@@ -64,9 +64,9 @@ struct type2 {
 
 struct noncopyable {
 	noncopyable() {}
-private:
-	noncopyable(const noncopyable &);
-	noncopyable& operator= (const noncopyable &);
+
+	noncopyable(const noncopyable &) = delete;
+	noncopyable& operator= (const noncopyable &) = delete;
 };
 
 struct type3 {
@@ -99,8 +99,8 @@ int main() {
 		assert(v1 == 3*2);
 	}
 	{
-//		noncopyable v;
-//		auto t = lazy_init::make_lazy_init<type3>(v);
+		noncopyable v;
+		auto t = lazy_init::make_lazy_init<type3, noncopyable&>(v);
 	}
 	{
 		auto t = lazy_init::make_lazy_init<int>(3);
