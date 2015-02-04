@@ -4,7 +4,6 @@ os:
   - linux
 
 compiler:
-  # - clang # disabled clang due to missing libc++
   - gcc
 
 notifications:
